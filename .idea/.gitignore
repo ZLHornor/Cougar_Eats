@@ -1,0 +1,24 @@
+
+# IntelliJ IDEA-specific files
+.idea/
+*.iml
+*.iws
+/shelf/
+/workspace.xml
+
+# Build output directories
+/out/
+bin/
+build/
+
+# Compiled class files
+*.class
+
+# OS and editor junk
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
