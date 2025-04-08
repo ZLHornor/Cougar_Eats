@@ -9,6 +9,7 @@ public class Driver extends Person{
     private final int driverID;
     private ArrayBlockingQueue<Integer> ratings;
     private Customer customer;
+    private boolean isAvailable = true;
 
     public Driver(String name, String location){
         super(name, location);
@@ -48,5 +49,25 @@ public class Driver extends Person{
         for(int i = 0; i < 10; i++){
             ratings.offer(ran.nextInt(1,6));
         }
+    }
+
+    public ArrayBlockingQueue<Integer> getRatings(){
+        return ratings;
+    }
+
+    public boolean isAvailable(){
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available){
+        this.isAvailable = available;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

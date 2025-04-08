@@ -32,9 +32,33 @@ public class Manager {
     //remove item from users order
     public void removeItem(int itemNumber){}
     //approve order and assign it to a driver
-    public void sendOrder(){}
+    public void sendOrder(){
+        for(Driver driver : Drivers){
+            if (driver.isAvailable()){
+                driver.setAvailable(false);
+                //ASSIGN THE AVAILABLE DRIVER TO THE CUSTOMER
+                customer.setDriver(driver);
+                customer.getDriver().printInfo();
+                driver.setCustomer(this.customer);
+                System.out.println(driver.getName() + " has been assigned.");
+
+
+
+            }
+        }
+    }
     //rate driver after order is completed
-    public void rateDriver(int rating){}
+    public void rateDriver(int rating){
+        //IF RATINGS HAS SPACE DO NOTHING
+        if(customer.getDriver().getRatings().offer(rating)){
+            return;
+        }
+        else{
+            //IF RATINGS IS FULL POLL THE FRONT OF QUEUE AND CALL AGAIN
+            customer.getDriver().getRatings().remove();
+            rateDriver(rating);
+        }
+    }
 
 
     // FILL SOME DRIVERS INTO THE LINKEDLIST
