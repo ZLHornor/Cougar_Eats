@@ -1,13 +1,19 @@
 package users;
 
+import java.util.Random;
+
 public abstract class Person {
 
+    protected Random ran;
     protected String name;
     protected String location;
+    protected int id;
 
     public Person(String name, String location){
+        ran = new Random();
         this.name = name;
         this.location = location;
+        id = ran.nextInt(1000, 10000);
     }
 
     public String getLocation() {

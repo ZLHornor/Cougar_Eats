@@ -6,7 +6,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Driver extends Person{
 
     Random ran;
-    private final int driverID;
     private ArrayBlockingQueue<Integer> ratings;
     private Customer customer;
     private boolean isAvailable = true;
@@ -17,7 +16,7 @@ public class Driver extends Person{
         ran = new Random();
         ratings = new ArrayBlockingQueue<>(10);
         fudgeRatings();
-        driverID = ran.nextInt(1000, 10000);
+
     }
 
     //NICE LITTLE DISPLAY OF DRIVERS INFO
@@ -27,10 +26,11 @@ public class Driver extends Person{
         System.out.println("|        Driver Info          |");
         System.out.println("+-----------------------------+");
         System.out.printf("| %-10s: %15s |\n", "Name", this.name);
-        System.out.printf("| %-10s: %15s |\n", "ID #", this.driverID);
+        System.out.printf("| %-10s: %15s |\n", "ID #", this.id);
         System.out.printf("| %-10s: %15.2f |\n", "Rating", getRating());
         System.out.printf("| %-10s: %15s |\n", "Location", this.location);
         System.out.println("+-----------------------------+");
+        System.out.println();
 
     }
 
