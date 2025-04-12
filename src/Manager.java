@@ -18,8 +18,8 @@ public class Manager {
         menu = new Menu();
         Drivers = new LinkedList<>();
         hireDrivers();
-        //mainMenu();
-        viewMenu();
+        mainMenu();
+        //viewMenu();
 
 
     }
@@ -38,6 +38,7 @@ public class Manager {
         System.out.println("+-----------------------------+");
     }
 
+    //GET USER INFORMATION AND CREATE CUSTOMER FROM INPUT
     public void getInformation(){
         String name;
         String address;
@@ -55,6 +56,10 @@ public class Manager {
         yesOrNo();
     }
 
+    // confirm user selection
+    /*TODO this needs to be able to be implemented for every selection
+        not just for getInformation()
+     */
     public void yesOrNo(){
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
         System.out.printf("| %-10s: %15s |\n", "ID #", "N");
@@ -77,12 +82,43 @@ public class Manager {
     }
 
     public void actionsMenu(){
+        System.out.println("+-----------------------------+");
         System.out.println("|      Let's get started.     |");
         System.out.println("|   Please Select an option.  |");
+        System.out.println("+-----------------------------+");
         actions();
+        int choice = scnr.nextInt();
+
 
     }
 
+    //switch statement for user selections
+    public void menuNavigator(int choice){
+
+        switch (choice){
+            case 1 ->{viewMenu();}
+            case 2 ->{addItem();}
+            //TODO make sure this works and returns error is user entry is incorrect
+            case 3 ->{
+                System.out.println("+-----------------------------+");
+                System.out.println("    Select item to remove.    ");
+                customer.getOrder().displayOrderedItems();
+                int remove = scnr.nextInt();
+                removeItem(remove);}
+            case 4 ->{}
+            case 5 ->{}
+            case 6 ->{}
+            default -> {
+                System.out.println("+-----------------------------+");
+                System.out.println("|         Invalid Entry       |");
+                System.out.println("|       Let's try again.      |");
+                System.out.println("+-----------------------------+");
+                actions();
+            }
+        }
+    }
+
+    //Display actions for the user
     public void actions(){
         System.out.printf("| %-13s: %12d |\n", "View Menu", 1);
         System.out.printf("| %-13s: %12d |\n", "Add Item", 2);
@@ -90,19 +126,29 @@ public class Manager {
         System.out.printf("| %-13s: %12d |\n", "Your Order", 4);
         System.out.printf("| %-13s: %12d |\n", "Send Order", 5);
         System.out.printf("| %-13s: %12d |\n", "Order Status", 6);
+        System.out.println();
     }
+
     // display the menu items
     public void viewMenu(){
         menu.displayMenu();
         actions();
     }
     //check on existing orders location
+    //TODO shows driver location and order status
+    //TODO increments both to simulate order progression
     public void checkStatus(){}
+
     //show the users current order
-    public void showOrder(){}
+    public void showOrder(){
+        customer.getOrder().viewOrder();
+    }
     //add item to users order
+    //TODO add item to order and increase price
     public void addItem(){}
-    //remove item from users order
+
+    //remove item from users order & reduce total price of order
+    //TODO remove item from order and reduces totalprice
     public void removeItem(int itemNumber){}
     //approve order and assign it to a driver
     public void sendOrder(){
@@ -121,6 +167,7 @@ public class Manager {
         }
     }
     //rate driver after order is completed
+    //TODO prompts user after order is completed
     public void rateDriver(int rating){
         //IF RATINGS HAS SPACE DO NOTHING
         if(customer.getDriver().getRatings().offer(rating)){

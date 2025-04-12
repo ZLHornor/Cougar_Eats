@@ -8,6 +8,7 @@ public class Customer extends Person{
 
     public Customer(String name, String location) {
         super(name, location);
+        order = new Order(this);
     }
 
     @Override
@@ -27,5 +28,9 @@ public class Customer extends Person{
     //ASSIGN AN AVAILABLE DRIVER
     public void setDriver(Driver driver){
         this.driver = driver;
+    }
+
+    public Order getOrder() {
+        return this.order;
     }
 }
