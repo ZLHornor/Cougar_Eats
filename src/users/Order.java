@@ -66,7 +66,7 @@ public class Order {
 
     public void displayOrderedItems(){
         System.out.println("+-----------------------------+");
-        System.out.println("|       Order " + orderID +"         |");
+        System.out.println("|          Order " + orderID + "          |");
         System.out.println("+-----------------------------+");
 
         int i = 1;
@@ -75,5 +75,38 @@ public class Order {
             System.out.printf("| %d | %-10s: %11.2f |\n", i,item, menu.getItemPrice(item));
             i++;
         }
+        System.out.println("+-----------------------------+");
+        System.out.println();
+    }
+
+    //ADD AN ITEM TO ORDER
+    public void addItem(int num){
+
+        this.orderedItems.add(menu.getItemList().get(num - 1));
+        String orderedItem = menu.getItemList().get(num - 1);
+        System.out.printf("| %-13s: %12s |\n", "Ordered Item" , orderedItem);
+        System.out.println("+-----------------------------+");
+        System.out.println();
+        displayOrderedItems();
+
+
+    }
+
+    //REMOVE AN ITEM FROM ORDERED ITEMS LIST
+    public void removeItem(int itemNumber) {
+        String item = menu.getItemList().get(itemNumber - 1);
+        this.orderedItems.remove(itemNumber - 1);
+
+        System.out.printf("| %-13s: %12s |\n", "Removed Item" , item);
+        System.out.println("+-----------------------------+");
+        System.out.println();
+
+        displayOrderedItems();
+
+
+    }
+
+    public List<String> getOrderedItems() {
+        return orderedItems;
     }
 }

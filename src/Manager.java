@@ -52,74 +52,89 @@ public class Manager {
         System.out.println("|                Welcome                |");
         System.out.println("+---------------------------------------+");
         System.out.println("|         Is your info correct?         |");
-        customer.printInfo();
-        yesOrNo();
+
+        if(yesOrNo()){
+            customer.printInfo();
+            actions();
+
+        }
+        else{
+            getInformation();
+        }
     }
 
     // confirm user selection
     /*TODO this needs to be able to be implemented for every selection
         not just for getInformation()
      */
-    public void yesOrNo(){
+    public boolean yesOrNo(){
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
-        System.out.printf("| %-10s: %15s |\n", "ID #", "N");
+        System.out.printf("| %-10s: %15s |\n", "No", "N");
         String answer = scnr.nextLine().toLowerCase();
-        switch (answer){
-            case "y" -> {
-                actionsMenu();
-            }
+
+        switch (answer) {
+
+            case "y" -> { return true;}
             case "n" -> {
                 System.out.println("|       Let's try again.      |");
-                getInformation();
+                return false;
             }
             default -> {
-                System.out.println("|         Invalid Entry       |");
-                System.out.println("|       Let's try again.      |");
+                invalidEntry();
                 yesOrNo();
-
             }
         }
-    }
-
-    public void actionsMenu(){
-        System.out.println("+-----------------------------+");
-        System.out.println("|      Let's get started.     |");
-        System.out.println("|   Please Select an option.  |");
-        System.out.println("+-----------------------------+");
-        actions();
-        int choice = scnr.nextInt();
-
+        return true;
 
     }
 
     //switch statement for user selections
-    public void menuNavigator(int choice){
-
+    public void menuNavigator(){
+        int choice = scnr.nextInt();
         switch (choice){
-            case 1 ->{viewMenu();}
-            case 2 ->{addItem();}
-            //TODO make sure this works and returns error is user entry is incorrect
-            case 3 ->{
+            case 1 ->{
+                viewMenu();
+                System.out.println("+-Add an item to your order?--+");
                 System.out.println("+-----------------------------+");
-                System.out.println("    Select item to remove.    ");
+                yesOrNo();
+
+            }
+            case 2 ->{
+                addItem();
+                actions();
+            }
+            //TODO make sure this works and returns error if user entry is incorrect
+            case 3 ->{
+                removeItem();
+                actions();
+            }
+            case 4 -> {
                 customer.getOrder().displayOrderedItems();
-                int remove = scnr.nextInt();
-                removeItem(remove);}
-            case 4 ->{}
+                actions();
+            }
             case 5 ->{}
             case 6 ->{}
             default -> {
-                System.out.println("+-----------------------------+");
-                System.out.println("|         Invalid Entry       |");
-                System.out.println("|       Let's try again.      |");
-                System.out.println("+-----------------------------+");
+                invalidEntry();
                 actions();
             }
         }
     }
 
-    //Display actions for the user
+    //TEXT PROMPT FOR INVALID ENTRY
+    private void invalidEntry() {
+        System.out.println("+-----------------------------+");
+        System.out.println("|         Invalid Entry       |");
+        System.out.println("|       Let's try again.      |");
+        System.out.println("+-----------------------------+");
+    }
+
+    //DISPLAY ACTIONS FOR THE USER
     public void actions(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|   Please Select an option.  |");
+        System.out.println("+-----------------------------+");
+
         System.out.printf("| %-13s: %12d |\n", "View Menu", 1);
         System.out.printf("| %-13s: %12d |\n", "Add Item", 2);
         System.out.printf("| %-13s: %12d |\n", "Remove Item", 3);
@@ -127,13 +142,15 @@ public class Manager {
         System.out.printf("| %-13s: %12d |\n", "Send Order", 5);
         System.out.printf("| %-13s: %12d |\n", "Order Status", 6);
         System.out.println();
+        menuNavigator();
     }
 
-    // display the menu items
+    //DISPLAY MENU ITEMS
     public void viewMenu(){
         menu.displayMenu();
         actions();
     }
+
     //check on existing orders location
     //TODO shows driver location and order status
     //TODO increments both to simulate order progression
@@ -145,11 +162,35 @@ public class Manager {
     }
     //add item to users order
     //TODO add item to order and increase price
-    public void addItem(){}
+    public void addItem(){
+        menu.displayMenu();
+        System.out.println("+-----------------------------+");
+        System.out.println("+Select an item number to add.+");
+        int selection = scnr.nextInt();
+        if (selection < 1 || selection > 7){
+            invalidEntry();
+            addItem();
+        }
+        customer.getOrder().addItem(selection);
+
+
+
+    }
 
     //remove item from users order & reduce total price of order
     //TODO remove item from order and reduces totalprice
-    public void removeItem(int itemNumber){}
+    public void removeItem(){
+        customer.getOrder().displayOrderedItems();
+        System.out.println("+-----------------------------+");
+        System.out.println("+--Select an item to remove.--+");
+        int selection = scnr.nextInt();
+        if (selection < 1 || selection > customer.getOrder().getOrderedItems().size()+1){
+            invalidEntry();
+            removeItem();
+        }
+        customer.getOrder().removeItem(selection);
+        actions();
+    }
     //approve order and assign it to a driver
     public void sendOrder(){
         for(Driver driver : Drivers){

@@ -7,10 +7,10 @@ import java.util.List;
 public class Menu {
 
     //HASHMAP TO STORE ITEMS AND PRICES
-    HashMap<String, Double> itemPrices;
+    private HashMap<String, Double> itemPrices;
 
     //ORDERED LIST FOR INDEXING
-    List<String> itemList;
+    private List<String> itemList;
 
     public Menu(){
 
@@ -61,6 +61,11 @@ public class Menu {
         return itemPrices.get(item);
     }
 
+    public HashMap<String, Double> getItemPrices() {
+        return itemPrices;
+    }
 
-
+    public List<String> getItemList() {
+        return itemList;
+    }
 }
