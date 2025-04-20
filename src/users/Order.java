@@ -64,6 +64,7 @@ public class Order {
         System.out.println();
     }
 
+    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     public void displayOrderedItems(){
         System.out.println("+-----------------------------+");
         System.out.println("|          Order " + orderID + "          |");
@@ -75,10 +76,13 @@ public class Order {
             System.out.printf("| %d | %-10s: %11.2f |\n", i,item, menu.getItemPrice(item));
             i++;
         }
+        System.out.printf("| %-14s: %11.2f |\n", "TotalPrice", totalPrice);
+        System.out.printf("| %-14s: %11s |\n", "Status", this.status);
         System.out.println("+-----------------------------+");
         System.out.println();
     }
 
+    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     //ADD AN ITEM TO ORDER
     public void addItem(int num){
 
@@ -87,11 +91,13 @@ public class Order {
         System.out.printf("| %-13s: %12s |\n", "Ordered Item" , orderedItem);
         System.out.println("+-----------------------------+");
         System.out.println();
-        displayOrderedItems();
+        calculatePrice();
+
 
 
     }
 
+    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     //REMOVE AN ITEM FROM ORDERED ITEMS LIST
     public void removeItem(int itemNumber) {
         String item = menu.getItemList().get(itemNumber - 1);
@@ -100,10 +106,19 @@ public class Order {
         System.out.printf("| %-13s: %12s |\n", "Removed Item" , item);
         System.out.println("+-----------------------------+");
         System.out.println();
+        calculatePrice();
 
-        displayOrderedItems();
 
 
+
+    }
+
+    public void calculatePrice(){
+        totalPrice = 0;
+        for(String item: orderedItems){
+            totalPrice += menu.getItemPrice(item);
+
+        }
     }
 
     public List<String> getOrderedItems() {

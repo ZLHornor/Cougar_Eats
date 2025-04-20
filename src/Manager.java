@@ -63,10 +63,7 @@ public class Manager {
         }
     }
 
-    // confirm user selection
-    /*TODO this needs to be able to be implemented for every selection
-        not just for getInformation()
-     */
+    //CONFIRM YES OR NO AND RETURN BOOLEAN
     public boolean yesOrNo(){
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
         System.out.printf("| %-10s: %15s |\n", "No", "N");
@@ -103,7 +100,6 @@ public class Manager {
                 addItem();
                 actions();
             }
-            //TODO make sure this works and returns error if user entry is incorrect
             case 3 ->{
                 removeItem();
                 actions();
