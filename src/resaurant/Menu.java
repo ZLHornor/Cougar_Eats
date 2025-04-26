@@ -61,10 +61,12 @@ public class Menu {
         return itemPrices.get(item);
     }
 
+
     public HashMap<String, Double> getItemPrices() {
         return itemPrices;
     }
 
+    //RETURN ITEM LIST WITH INDEXS FOR SELECTION
     public List<String> getItemList() {
         return itemList;
     }

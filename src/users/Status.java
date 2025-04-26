@@ -2,5 +2,5 @@ package users;
 
 public enum Status {
 
-    PLACED, ON_ROUTE, DELIVERED
+    NOT_PLACED, PLACED, ON_ROUTE, DELIVERED
 }

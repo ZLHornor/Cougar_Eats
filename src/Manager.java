@@ -29,9 +29,9 @@ public class Manager {
     public void mainMenu(){
         printTitle();
         getInformation();
-
     }
 
+    //PRINT COUGAR EATS WITH BORDERS
     public void printTitle(){
         System.out.println("+-----------------------------+");
         System.out.println("|         Cougar Eats         |");
@@ -91,10 +91,15 @@ public class Manager {
         switch (choice){
             case 1 ->{
                 viewMenu();
+                //ASK IF USER WANTS TO ADD AN ITEM
                 System.out.println("+-Add an item to your order?--+");
-                System.out.println("+-----------------------------+");
-                yesOrNo();
-
+                //System.out.println("+-----------------------------+");
+                if(yesOrNo()){
+                    addItem();
+                    actions();
+                }else{
+                    actions();
+                }
             }
             case 2 ->{
                 addItem();
@@ -108,8 +113,14 @@ public class Manager {
                 customer.getOrder().displayOrderedItems();
                 actions();
             }
-            case 5 ->{}
-            case 6 ->{}
+            case 5 ->{
+                sendOrder();
+                actions();
+            }
+            case 6 ->{
+                checkStatus();
+                actions();
+            }
             default -> {
                 invalidEntry();
                 actions();
@@ -150,7 +161,10 @@ public class Manager {
     //check on existing orders location
     //TODO shows driver location and order status
     //TODO increments both to simulate order progression
-    public void checkStatus(){}
+    public void checkStatus(){
+        customer.getOrder().updateStatus();
+        showOrder();
+    }
 
     //show the users current order
     public void showOrder(){
@@ -180,13 +194,14 @@ public class Manager {
         System.out.println("+-----------------------------+");
         System.out.println("+--Select an item to remove.--+");
         int selection = scnr.nextInt();
-        if (selection < 1 || selection > customer.getOrder().getOrderedItems().size()+1){
+        if (selection < 1 || selection > customer.getOrder().getOrderedItems().size()){
             invalidEntry();
             removeItem();
         }
         customer.getOrder().removeItem(selection);
         actions();
     }
+
     //approve order and assign it to a driver
     public void sendOrder(){
         for(Driver driver : Drivers){
@@ -194,15 +209,17 @@ public class Manager {
                 driver.setAvailable(false);
                 //ASSIGN THE AVAILABLE DRIVER TO THE CUSTOMER
                 customer.setDriver(driver);
+                System.out.println(driver.getName() + " has been assigned.");
                 customer.getDriver().printInfo();
                 driver.setCustomer(this.customer);
-                System.out.println(driver.getName() + " has been assigned.");
 
-
-
+                customer.getOrder().updateStatus();
+                break;
             }
         }
     }
+
+
     //rate driver after order is completed
     //TODO prompts user after order is completed
     public void rateDriver(int rating){
@@ -225,7 +242,6 @@ public class Manager {
         Drivers.add(new Driver("Driver 3", "In House"));
         Drivers.add(new Driver("Driver 4", "In House"));
         Drivers.add(new Driver("Driver 5", "In House"));
-
     }
 
     // DISPLAY ALL DRIVER INFO

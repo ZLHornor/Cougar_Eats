@@ -28,19 +28,20 @@ public class Order {
         totalPrice = 0;
         menu = new Menu();
         orderedItems = new ArrayList<>();
-        status = PLACED;
-
+        status = NOT_PLACED;
     }
 
     //ASSIGN A RANDOM 3 DIGIT ID
     public void assignID(){
         orderID = ran.nextInt(100, 1000);
-
     }
 
     //UPDATES ORDER STATUS UNTIL COMPLETED
     public void updateStatus(){
         switch (status){
+            case NOT_PLACED -> {
+                status = PLACED;
+            }
             case PLACED -> {
                 status = ON_ROUTE;
             }
@@ -59,8 +60,7 @@ public class Order {
         System.out.println("+-----------------------------+");
         System.out.printf("| %-13s: %12s |\n", "Owner", customer.getName());
         System.out.printf("| %-13s: %12s |\n", "Location", customer.getLocation());
-        System.out.printf("| %-13s: %12.2f |\n", "TotalPrice", totalPrice);
-        System.out.printf("| %-13s: %12s |\n", "Status", this.status);
+        System.out.printf("| %-13s: %12s |\n", "Driver", customer.getDriver().getName());
         System.out.println();
     }
 
@@ -92,9 +92,6 @@ public class Order {
         System.out.println("+-----------------------------+");
         System.out.println();
         calculatePrice();
-
-
-
     }
 
     //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
@@ -107,17 +104,13 @@ public class Order {
         System.out.println("+-----------------------------+");
         System.out.println();
         calculatePrice();
-
-
-
-
     }
 
+    //CALCULATE PRICE OF CURRENT ORDER
     public void calculatePrice(){
         totalPrice = 0;
         for(String item: orderedItems){
             totalPrice += menu.getItemPrice(item);
-
         }
     }
 
