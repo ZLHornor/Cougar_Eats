@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import static users.Status.DELIVERED;
+
 public class Manager {
 
     private List<Driver> Drivers;
@@ -56,9 +58,9 @@ public class Manager {
         if(yesOrNo()){
             customer.printInfo();
             actions();
-
         }
         else{
+            System.out.println("|       Let's try again.      |");
             getInformation();
         }
     }
@@ -72,10 +74,7 @@ public class Manager {
         switch (answer) {
 
             case "y" -> { return true;}
-            case "n" -> {
-                System.out.println("|       Let's try again.      |");
-                return false;
-            }
+            case "n" -> { return false;}
             default -> {
                 invalidEntry();
                 yesOrNo();
@@ -92,7 +91,7 @@ public class Manager {
             case 1 ->{
                 viewMenu();
                 //ASK IF USER WANTS TO ADD AN ITEM
-                System.out.println("+-Add an item to your order?--+");
+                System.out.println("+ Add an item to your order?  +");
                 //System.out.println("+-----------------------------+");
                 if(yesOrNo()){
                     addItem();
@@ -164,6 +163,18 @@ public class Manager {
     public void checkStatus(){
         customer.getOrder().updateStatus();
         showOrder();
+        if (customer.getOrder().getStatus() == DELIVERED){
+
+            System.out.println("Your Order has been delivered. Would you like to rate your Driver?");
+            if(yesOrNo()){
+                rateDriverPrompt();
+            }
+            else{
+                System.out.println("Have a nice day.");
+            }
+
+
+        }
     }
 
     //show the users current order
@@ -182,9 +193,6 @@ public class Manager {
             addItem();
         }
         customer.getOrder().addItem(selection);
-
-
-
     }
 
     //remove item from users order & reduce total price of order
@@ -202,7 +210,7 @@ public class Manager {
         actions();
     }
 
-    //approve order and assign it to a driver
+    //APPROVE ORDER AND ASSIGN AN AVAILABLE DRIVER
     public void sendOrder(){
         for(Driver driver : Drivers){
             if (driver.isAvailable()){
@@ -219,9 +227,8 @@ public class Manager {
         }
     }
 
-
-    //rate driver after order is completed
-    //TODO prompts user after order is completed
+    //RATE DRIVER AFTER ORDER IS DELIVERED
+    //TODO Check Functionality
     public void rateDriver(int rating){
         //IF RATINGS HAS SPACE DO NOTHING
         if(customer.getDriver().getRatings().offer(rating)){
@@ -232,6 +239,24 @@ public class Manager {
             customer.getDriver().getRatings().remove();
             rateDriver(rating);
         }
+    }
+
+    public void rateDriverPrompt(){
+        int rating = getRatingHelper();
+
+        if (rating < 1 || rating > 5){
+            invalidEntry();
+            rateDriverPrompt();
+        }else{
+            rateDriver(rating);
+        }
+    }
+
+    public int getRatingHelper(){
+
+        System.out.println("Please provide a rating between 1 and 5.");
+        return scnr.nextInt();
+
     }
 
 
@@ -250,4 +275,6 @@ public class Manager {
             driver.printInfo();
         }
     }
+
+    //TODO make a sign out function
 }

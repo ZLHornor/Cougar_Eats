@@ -53,6 +53,7 @@ public class Order {
         }
     }
 
+    //DISPLAYS ENTIRE ORDER W/ DRIVER, OWNER, LOCATION
     public void viewOrder(){
 
         displayOrderedItems();
@@ -63,6 +64,7 @@ public class Order {
         System.out.printf("| %-13s: %12s |\n", "Driver", customer.getDriver().getName());
         System.out.println();
     }
+
 
     //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     public void displayOrderedItems(){
@@ -82,39 +84,61 @@ public class Order {
         System.out.println();
     }
 
-    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
+
     //ADD AN ITEM TO ORDER
     public void addItem(int num){
 
+        //GET ADD ITEM TO ORDERED ITEMS FROM MENU ITEM LIST
         this.orderedItems.add(menu.getItemList().get(num - 1));
+
+        //MAKE A STRING OF ORDERED ITEM
         String orderedItem = menu.getItemList().get(num - 1);
+
+        //PRINT ORDERED ITEM FOR CUSTOMER TO CONFIRM ORDER
         System.out.printf("| %-13s: %12s |\n", "Ordered Item" , orderedItem);
         System.out.println("+-----------------------------+");
         System.out.println();
+
+        //CALCULATE NEW PRICE
         calculatePrice();
     }
 
-    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     //REMOVE AN ITEM FROM ORDERED ITEMS LIST
     public void removeItem(int itemNumber) {
+
+        //MAKE STRING OF REMOVED ITEM
         String item = menu.getItemList().get(itemNumber - 1);
+
+        //REMOVER ITEM FROM USER LIST
         this.orderedItems.remove(itemNumber - 1);
 
+        //PRINT REMOVAL CONFIRMATION
         System.out.printf("| %-13s: %12s |\n", "Removed Item" , item);
         System.out.println("+-----------------------------+");
         System.out.println();
+
+        //CALCULATE NEW PRICE
         calculatePrice();
     }
 
     //CALCULATE PRICE OF CURRENT ORDER
     public void calculatePrice(){
+        //RESET PRICE TO ZERO
         totalPrice = 0;
+
+        //ITERATE THROUGH USERS ORDER AND ADD PRICES FROM MENU
         for(String item: orderedItems){
             totalPrice += menu.getItemPrice(item);
         }
     }
 
+    //RETURN USERS ORDERED ITEMS LIST
     public List<String> getOrderedItems() {
         return orderedItems;
+    }
+
+    //
+    public Status getStatus(){
+        return this.status;
     }
 }
