@@ -1,3 +1,5 @@
+package Interfaces;
+
 import resaurant.Menu;
 import users.Customer;
 import users.Driver;
@@ -8,17 +10,19 @@ import java.util.Scanner;
 
 import static users.Status.DELIVERED;
 
-public class Manager {
+public class CustomerInterface {
 
     private List<Driver> Drivers;
     private Customer customer;
     private final Menu menu;
     private Scanner scnr;
 
-    public Manager(){
+    public CustomerInterface(){
+
         scnr = new Scanner(System.in);
         menu = new Menu();
         Drivers = new LinkedList<>();
+
         hireDrivers();
         mainMenu();
         //viewMenu();
@@ -55,7 +59,7 @@ public class Manager {
         System.out.println("+---------------------------------------+");
         System.out.println("|         Is your info correct?         |");
 
-        if(yesOrNo()){
+        if(yesOrNo(scnr)){
             customer.printInfo();
             actions();
         }
@@ -66,7 +70,7 @@ public class Manager {
     }
 
     //CONFIRM YES OR NO AND RETURN BOOLEAN
-    public boolean yesOrNo(){
+    public boolean yesOrNo(Scanner scnr){
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
         System.out.printf("| %-10s: %15s |\n", "No", "N");
         String answer = scnr.nextLine().toLowerCase();
@@ -77,7 +81,7 @@ public class Manager {
             case "n" -> { return false;}
             default -> {
                 invalidEntry();
-                yesOrNo();
+                yesOrNo(scnr);
             }
         }
         return true;
@@ -93,7 +97,7 @@ public class Manager {
                 //ASK IF USER WANTS TO ADD AN ITEM
                 System.out.println("+ Add an item to your order?  +");
                 //System.out.println("+-----------------------------+");
-                if(yesOrNo()){
+                if(yesOrNo(scnr)){
                     addItem();
                     actions();
                 }else{
@@ -166,7 +170,7 @@ public class Manager {
         if (customer.getOrder().getStatus() == DELIVERED){
 
             System.out.println("Your Order has been delivered. Would you like to rate your Driver?");
-            if(yesOrNo()){
+            if(yesOrNo(scnr)){
                 rateDriverPrompt();
             }
             else{
