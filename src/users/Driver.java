@@ -1,9 +1,10 @@
 package users;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class Driver extends Person{
+public class Driver extends Person implements Serializable {
 
     Random ran;
     private ArrayBlockingQueue<Integer> ratings;

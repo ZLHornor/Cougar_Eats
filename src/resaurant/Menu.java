@@ -1,10 +1,11 @@
 package resaurant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Menu {
+public class Menu implements Serializable {
 
     //HASHMAP TO STORE ITEMS AND PRICES
     private HashMap<String, Double> itemPrices;

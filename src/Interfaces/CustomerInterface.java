@@ -16,15 +16,17 @@ public class CustomerInterface {
     private Customer customer;
     private final Menu menu;
     private Scanner scnr;
+    TextHelpers txt;
 
     public CustomerInterface(){
 
         scnr = new Scanner(System.in);
         menu = new Menu();
         Drivers = new LinkedList<>();
+        txt = new TextHelpers(scnr);
 
         hireDrivers();
-        mainMenu();
+        //mainMenu();
         //viewMenu();
 
 
@@ -33,16 +35,10 @@ public class CustomerInterface {
 //TODO fill in user interface methods
     // main menu of options for user to select
     public void mainMenu(){
-        printTitle();
+        txt.printTitle();
         getInformation();
     }
 
-    //PRINT COUGAR EATS WITH BORDERS
-    public void printTitle(){
-        System.out.println("+-----------------------------+");
-        System.out.println("|         Cougar Eats         |");
-        System.out.println("+-----------------------------+");
-    }
 
     //GET USER INFORMATION AND CREATE CUSTOMER FROM INPUT
     public void getInformation(){
@@ -59,7 +55,7 @@ public class CustomerInterface {
         System.out.println("+---------------------------------------+");
         System.out.println("|         Is your info correct?         |");
 
-        if(yesOrNo(scnr)){
+        if(txt.yesOrNo(scnr)){
             customer.printInfo();
             actions();
         }
@@ -69,24 +65,6 @@ public class CustomerInterface {
         }
     }
 
-    //CONFIRM YES OR NO AND RETURN BOOLEAN
-    public boolean yesOrNo(Scanner scnr){
-        System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
-        System.out.printf("| %-10s: %15s |\n", "No", "N");
-        String answer = scnr.nextLine().toLowerCase();
-
-        switch (answer) {
-
-            case "y" -> { return true;}
-            case "n" -> { return false;}
-            default -> {
-                invalidEntry();
-                yesOrNo(scnr);
-            }
-        }
-        return true;
-
-    }
 
     //switch statement for user selections
     public void menuNavigator(){
@@ -97,7 +75,7 @@ public class CustomerInterface {
                 //ASK IF USER WANTS TO ADD AN ITEM
                 System.out.println("+ Add an item to your order?  +");
                 //System.out.println("+-----------------------------+");
-                if(yesOrNo(scnr)){
+                if(txt.yesOrNo(scnr)){
                     addItem();
                     actions();
                 }else{
@@ -125,19 +103,12 @@ public class CustomerInterface {
                 actions();
             }
             default -> {
-                invalidEntry();
+                txt.invalidEntry();
                 actions();
             }
         }
     }
 
-    //TEXT PROMPT FOR INVALID ENTRY
-    private void invalidEntry() {
-        System.out.println("+-----------------------------+");
-        System.out.println("|         Invalid Entry       |");
-        System.out.println("|       Let's try again.      |");
-        System.out.println("+-----------------------------+");
-    }
 
     //DISPLAY ACTIONS FOR THE USER
     public void actions(){
@@ -170,7 +141,7 @@ public class CustomerInterface {
         if (customer.getOrder().getStatus() == DELIVERED){
 
             System.out.println("Your Order has been delivered. Would you like to rate your Driver?");
-            if(yesOrNo(scnr)){
+            if(txt.yesOrNo(scnr)){
                 rateDriverPrompt();
             }
             else{
@@ -193,7 +164,7 @@ public class CustomerInterface {
         System.out.println("+Select an item number to add.+");
         int selection = scnr.nextInt();
         if (selection < 1 || selection > 7){
-            invalidEntry();
+            txt.invalidEntry();
             addItem();
         }
         customer.getOrder().addItem(selection);
@@ -207,7 +178,7 @@ public class CustomerInterface {
         System.out.println("+--Select an item to remove.--+");
         int selection = scnr.nextInt();
         if (selection < 1 || selection > customer.getOrder().getOrderedItems().size()){
-            invalidEntry();
+            txt.invalidEntry();
             removeItem();
         }
         customer.getOrder().removeItem(selection);
@@ -249,7 +220,7 @@ public class CustomerInterface {
         int rating = getRatingHelper();
 
         if (rating < 1 || rating > 5){
-            invalidEntry();
+            txt.invalidEntry();
             rateDriverPrompt();
         }else{
             rateDriver(rating);

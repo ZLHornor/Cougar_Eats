@@ -2,13 +2,14 @@ package users;
 
 import resaurant.Menu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static users.Status.*;
 
-public class Order {
+public class Order implements Serializable {
 
     private int orderID;
     private Random ran;

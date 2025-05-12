@@ -1,8 +1,9 @@
 package users;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public abstract class Person {
+public abstract class Person implements Serializable {
 
     protected Random ran;
     protected String name;
