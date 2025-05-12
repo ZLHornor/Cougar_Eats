@@ -1,11 +1,14 @@
 package resaurant;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Menu implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     //HASHMAP TO STORE ITEMS AND PRICES
     private HashMap<String, Double> itemPrices;

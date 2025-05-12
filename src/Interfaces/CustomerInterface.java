@@ -1,5 +1,6 @@
 package Interfaces;
 
+import data_base.DataBase;
 import resaurant.Menu;
 import users.Customer;
 import users.Driver;
@@ -17,17 +18,18 @@ public class CustomerInterface {
     private final Menu menu;
     private Scanner scnr;
     TextHelpers txt;
+    DataBase data;
 
-    public CustomerInterface(){
+    public CustomerInterface(DataBase data){
 
         scnr = new Scanner(System.in);
         menu = new Menu();
         Drivers = new LinkedList<>();
         txt = new TextHelpers(scnr);
+        this.data = data;
 
         hireDrivers();
-        //mainMenu();
-        //viewMenu();
+
 
 
     }
@@ -56,7 +58,11 @@ public class CustomerInterface {
         System.out.println("|         Is your info correct?         |");
 
         if(txt.yesOrNo(scnr)){
+            //Add Customer to DATA BASE
+            data.addCustomer(new Customer(name, address));
+
             customer.printInfo();
+            txt.rememberID(customer.getID());
             actions();
         }
         else{

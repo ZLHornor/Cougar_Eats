@@ -42,4 +42,12 @@ public class TextHelpers {
         System.out.println("|       Let's try again.      |");
         System.out.println("+-----------------------------+");
     }
+
+    public void rememberID(int id){
+        System.out.println("+-----------------------------+");
+        System.out.println("|    Please Remember you're   |");
+        System.out.println("|         Your ID Num         |");
+        System.out.println("|             " + id + "            |");
+        System.out.println("+-----------------------------+");
+    }
 }

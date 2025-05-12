@@ -1,8 +1,10 @@
 package users;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class Customer extends Person implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Driver driver = null;
     private Order order;
@@ -35,4 +37,11 @@ public class Customer extends Person implements Serializable {
     public Order getOrder() {
         return this.order;
     }
+
+    public void save() throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(this.name + ".ser"));
+        out.writeObject(this);
+        out.close();
+    }
+
 }

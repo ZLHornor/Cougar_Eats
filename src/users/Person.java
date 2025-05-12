@@ -1,9 +1,13 @@
 package users;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
 
 public abstract class Person implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     protected Random ran;
     protected String name;
@@ -34,6 +38,10 @@ public abstract class Person implements Serializable {
     }
 
     public abstract void printInfo();
+
+    public int getID(){
+        return this.id;
+    }
 
 
 

@@ -1,10 +1,13 @@
 package users;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Driver extends Person implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     Random ran;
     private ArrayBlockingQueue<Integer> ratings;

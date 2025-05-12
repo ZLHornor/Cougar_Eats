@@ -1,5 +1,7 @@
 package Interfaces;
 
+import data_base.DataBase;
+
 import java.util.Scanner;
 
 import static Interfaces.USER.*;
@@ -11,6 +13,7 @@ public class Manager {
     CustomerInterface cstmr;
     DriverInterface drvr;
     TextHelpers txt;
+    DataBase data;
 
     public Manager(){
         init();
@@ -20,10 +23,12 @@ public class Manager {
     //Instantiate Objects
     public void init(){
         scnr = new Scanner(System.in);
+        data = new DataBase();
         userCheck = null;
-        cstmr = new CustomerInterface();
+        cstmr = new CustomerInterface(data);
         drvr = new DriverInterface();
         txt = new TextHelpers(scnr);
+
     }
 
     //LET USER DECIDE IF THEY ARE A CUSTOMER OR A DRIVER
