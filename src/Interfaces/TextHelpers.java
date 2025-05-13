@@ -12,26 +12,38 @@ public class TextHelpers {
 
     //PRINT COUGAR EATS WITH BORDERS
     public void printTitle(){
-        System.out.println("+-----------------------------+");
+        printShortLine();
         System.out.println("|         Cougar Eats         |");
+        printShortLine();
+    }
+
+    public void printShortLine(){
         System.out.println("+-----------------------------+");
+    }
+
+    public void printLongLine(){
+        System.out.println("+---------------------------------------+");
     }
 
     //CONFIRM YES OR NO AND RETURN BOOLEAN
     public boolean yesOrNo(Scanner scnr){
+        printShortLine();
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
         System.out.printf("| %-10s: %15s |\n", "No", "N");
+        printShortLine();
         String answer = scnr.nextLine().toLowerCase();
 
         switch (answer) {
-
-            case "y" -> { return true;}
+            case "y" -> {
+                printGap();
+                return true;}
             case "n" -> { return false;}
             default -> {
                 invalidEntry();
                 yesOrNo(scnr);
             }
         }
+
         return true;
     }
 
@@ -41,6 +53,7 @@ public class TextHelpers {
         System.out.println("|         Invalid Entry       |");
         System.out.println("|       Let's try again.      |");
         System.out.println("+-----------------------------+");
+        printGap();
     }
 
     public void rememberID(int id){
@@ -49,5 +62,19 @@ public class TextHelpers {
         System.out.println("|         Your ID Num         |");
         System.out.println("|             " + id + "            |");
         System.out.println("+-----------------------------+");
+        printGap();
     }
+
+    public void failedToLoad(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|        Failed to Load       |");
+        System.out.println("|       Let's try again.      |");
+        System.out.println("+-----------------------------+");
+        printGap();
+    }
+
+    public void printGap(){
+        System.out.println();
+    }
+
 }

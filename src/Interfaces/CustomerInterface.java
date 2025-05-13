@@ -29,16 +29,13 @@ public class CustomerInterface {
         this.data = data;
 
         hireDrivers();
-
-
-
     }
 
 //TODO fill in user interface methods
     // main menu of options for user to select
     public void mainMenu(){
-        txt.printTitle();
-        getInformation();
+        returningCustomer();
+        actions();
     }
 
 
@@ -47,19 +44,25 @@ public class CustomerInterface {
         String name;
         String address;
 
+        txt.printShortLine();
         System.out.println("|   Please enter your name:   |");
         name = scnr.nextLine();
         System.out.println("|  Please enter your address: |");
         address = scnr.nextLine();
-        customer = new Customer(name, address);
-        System.out.println("+---------------------------------------+");
+        txt.printLongLine();
         System.out.println("|                Welcome                |");
-        System.out.println("+---------------------------------------+");
+        txt.printLongLine();
         System.out.println("|         Is your info correct?         |");
+        System.out.printf("| %-10s: %25s |\n", "Name", name);
+        System.out.printf("| %-10s: %25s |\n", "Address", address);
+        txt.printLongLine();
+
 
         if(txt.yesOrNo(scnr)){
+            customer = new Customer(name, address);
             //Add Customer to DATA BASE
-            data.addCustomer(new Customer(name, address));
+            data.addCustomer(customer);
+
 
             customer.printInfo();
             txt.rememberID(customer.getID());
@@ -71,6 +74,50 @@ public class CustomerInterface {
         }
     }
 
+    public void returningCustomer(){
+        txt.printShortLine();
+        System.out.println("|       Have an account?      |");
+        txt.printShortLine();
+
+        if(!txt.yesOrNo(scnr)){
+            getInformation();
+        }else{
+            loadCustomer();
+        }
+    }
+
+    public void loadCustomer(){
+        System.out.println("+---------------------------------------+");
+        System.out.println("|              Welcome back!            |");
+        System.out.println("|        What is your ID Number?        |");
+
+        int id = scnr.nextInt();
+        customer = data.loadCustomer(id);
+        if(customer == null){
+            txt.failedToLoad();
+            loadCustomer();
+        }
+    }
+
+
+
+    //DISPLAY ACTIONS FOR THE USER
+    public void actions(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|   Please Select an option.  |");
+        System.out.println("+-----------------------------+");
+
+        System.out.printf("| %-13s: %12d |\n", "View Menu", 1);
+        System.out.printf("| %-13s: %12d |\n", "Add Item", 2);
+        System.out.printf("| %-13s: %12d |\n", "Remove Item", 3);
+        System.out.printf("| %-13s: %12d |\n", "Your Order", 4);
+        System.out.printf("| %-13s: %12d |\n", "Send Order", 5);
+        System.out.printf("| %-13s: %12d |\n", "Order Status", 6);
+        System.out.println();
+        data.save();
+        menuNavigator();
+
+    }
 
     //switch statement for user selections
     public void menuNavigator(){
@@ -115,22 +162,6 @@ public class CustomerInterface {
         }
     }
 
-
-    //DISPLAY ACTIONS FOR THE USER
-    public void actions(){
-        System.out.println("+-----------------------------+");
-        System.out.println("|   Please Select an option.  |");
-        System.out.println("+-----------------------------+");
-
-        System.out.printf("| %-13s: %12d |\n", "View Menu", 1);
-        System.out.printf("| %-13s: %12d |\n", "Add Item", 2);
-        System.out.printf("| %-13s: %12d |\n", "Remove Item", 3);
-        System.out.printf("| %-13s: %12d |\n", "Your Order", 4);
-        System.out.printf("| %-13s: %12d |\n", "Send Order", 5);
-        System.out.printf("| %-13s: %12d |\n", "Order Status", 6);
-        System.out.println();
-        menuNavigator();
-    }
 
     //DISPLAY MENU ITEMS
     public void viewMenu(){

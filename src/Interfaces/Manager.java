@@ -1,7 +1,12 @@
 package Interfaces;
 
 import data_base.DataBase;
+import users.Person;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 import static Interfaces.USER.*;
@@ -23,12 +28,34 @@ public class Manager {
     //Instantiate Objects
     public void init(){
         scnr = new Scanner(System.in);
-        data = new DataBase();
+        data = loadData();
         userCheck = null;
         cstmr = new CustomerInterface(data);
         drvr = new DriverInterface();
         txt = new TextHelpers(scnr);
 
+
+    }
+
+    //LOAD DATA BASE CONTAINING ALL USER INFORMATION
+    public DataBase loadData(){
+        //CHECK FOR DATABASE FILE
+        File file = new File("data.ser");
+
+        //IF FOUND LOAD IT INTO DATABASE OBJECT
+        if (file.exists()) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+                return (DataBase) in.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Failed to load existing database. Creating new one...");
+            }
+        } else {
+            System.out.println("No database file found. Creating new one...");
+        }
+
+        //IF NOT FOUND CREATE NEW DATABASE
+        return new DataBase(); // create a fresh one if no file or loading failed
     }
 
     //LET USER DECIDE IF THEY ARE A CUSTOMER OR A DRIVER
@@ -43,7 +70,7 @@ public class Manager {
     public void selectMode(){
 
         int choice = 0;
-        System.out.println("+     Select an Interface     +");
+        System.out.println("|     Select an Interface     |");
         System.out.println("+-----------------------------+");
         System.out.printf("| %-10s: %15s |\n", "Driver", "1");
         System.out.printf("| %-10s: %15s |\n", "Customer", "2");
