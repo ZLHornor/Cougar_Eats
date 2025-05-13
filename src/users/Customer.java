@@ -40,5 +40,9 @@ public class Customer extends Person implements Serializable {
         return this.order;
     }
 
+    public void resetOrder(){
+        this.order = new Order(this);
+    }
+
 
 }

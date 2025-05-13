@@ -1,13 +1,11 @@
 package data_base;
 
-import Interfaces.TextHelpers;
 import users.Customer;
 import users.Driver;
 import users.Order;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class DataBase implements Serializable {
     @Serial
@@ -18,22 +16,30 @@ public class DataBase implements Serializable {
     HashMap<Integer, Order> orders;
 
 
-
-
     public DataBase(){
         customers = new HashMap<>();
+        orders = new HashMap<>();
+        drivers = new HashMap<>();
     }
 
     public void addCustomer(Customer customer){
         customers.put(customer.getID(), customer);
     }
 
-    public Customer loadCustomer(int id){
+    public void addOrder(Order order) {
+        this.orders.put(order.getID(), order);
+    }
+
+    public Customer getCustomer(int id){
 
         if(!customers.containsKey(id)){
             return null;
         }
         return customers.get(id);
+    }
+
+    public Order getOrder(int id){
+        return orders.get(id);
     }
 
     public void save(){

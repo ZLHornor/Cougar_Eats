@@ -1,7 +1,7 @@
 package Interfaces;
 
 import data_base.DataBase;
-import users.Person;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,7 @@ public class Manager {
 
     public Manager(){
         init();
+        data.printCustomers();
         start();
     }
 
@@ -30,8 +31,8 @@ public class Manager {
         scnr = new Scanner(System.in);
         data = loadData();
         userCheck = null;
-        cstmr = new CustomerInterface(data);
-        drvr = new DriverInterface();
+        cstmr = new CustomerInterface(data, this);
+        drvr = new DriverInterface(data, this);
         txt = new TextHelpers(scnr);
 
 
@@ -69,7 +70,7 @@ public class Manager {
 
     public void selectMode(){
 
-        int choice = 0;
+        int choice;
         System.out.println("|     Select an Interface     |");
         System.out.println("+-----------------------------+");
         System.out.printf("| %-10s: %15s |\n", "Driver", "1");
@@ -92,7 +93,7 @@ public class Manager {
     public void switchUsers(){
         switch(userCheck){
             case DRIVER ->{}
-            case CUSTOMER ->{cstmr.mainMenu();}
+            case CUSTOMER -> cstmr.mainMenu();
         }
     }
 

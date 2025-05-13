@@ -4,6 +4,7 @@ import data_base.DataBase;
 import resaurant.Menu;
 import users.Customer;
 import users.Driver;
+import users.Order;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,25 +20,29 @@ public class CustomerInterface {
     private Scanner scnr;
     TextHelpers txt;
     DataBase data;
+    private Manager manager;
 
-    public CustomerInterface(DataBase data){
+    public CustomerInterface(DataBase data, Manager manager){
 
         scnr = new Scanner(System.in);
         menu = new Menu();
         Drivers = new LinkedList<>();
         txt = new TextHelpers(scnr);
+        this.manager = manager;
         this.data = data;
+
 
         hireDrivers();
     }
 
-//TODO fill in user interface methods
-    // main menu of options for user to select
+
+    //INITIAL MENU FOR LOG-IN/USER CREATION
     public void mainMenu(){
+        //CHECK IF USER IS NEW OR RETURNING CUSTOMER
         returningCustomer();
+        //PROCEED TO ACTIONS MENU
         actions();
     }
-
 
     //GET USER INFORMATION AND CREATE CUSTOMER FROM INPUT
     public void getInformation(){
@@ -74,51 +79,63 @@ public class CustomerInterface {
         }
     }
 
+    //PROMPT FOR USERS ACCESS INFORMATION OR ACCOUNT CREATION
     public void returningCustomer(){
+        //RETURNING CUSTOMER?
         txt.printShortLine();
         System.out.println("|       Have an account?      |");
         txt.printShortLine();
 
+
         if(!txt.yesOrNo(scnr)){
+            //IF NO MAKE ACCOUNT
             getInformation();
         }else{
+            //IF YES LOAD CUSTOMER FROM DATABASE
             loadCustomer();
         }
     }
 
+    //USES CUSTOMER PIN TO FIND INFORMATION IN DATABASE AND LOAD IT OVER
     public void loadCustomer(){
         System.out.println("+---------------------------------------+");
         System.out.println("|              Welcome back!            |");
         System.out.println("|        What is your ID Number?        |");
 
         int id = scnr.nextInt();
-        customer = data.loadCustomer(id);
+        customer = data.getCustomer(id);
         if(customer == null){
             txt.failedToLoad();
             loadCustomer();
         }
     }
 
-
-
     //DISPLAY ACTIONS FOR THE USER
     public void actions(){
-        System.out.println("+-----------------------------+");
-        System.out.println("|   Please Select an option.  |");
-        System.out.println("+-----------------------------+");
 
+        txt.printShortLine();
+        System.out.println("|   Please Select an option.  |");
+        txt.printShortLine();
         System.out.printf("| %-13s: %12d |\n", "View Menu", 1);
         System.out.printf("| %-13s: %12d |\n", "Add Item", 2);
         System.out.printf("| %-13s: %12d |\n", "Remove Item", 3);
         System.out.printf("| %-13s: %12d |\n", "Your Order", 4);
-        System.out.printf("| %-13s: %12d |\n", "Send Order", 5);
-        System.out.printf("| %-13s: %12d |\n", "Order Status", 6);
+        System.out.printf("| %-13s: %12d |\n", "Delete Order", 5);
+        System.out.printf("| %-13s: %12d |\n", "Send Order", 6);
+        System.out.printf("| %-13s: %12d |\n", "Order Status", 7);
+        System.out.printf("| %-13s: %12d |\n", "Log Out", 8); //TODO make this method
+        txt.printShortLine();
         System.out.println();
+
+        //AUTO SAVES AFTER EVERY SELECTION
         data.save();
+
+        //USER SELECTS AN OPTION
         menuNavigator();
 
     }
 
+    //TODO implement cancel functionality
     //switch statement for user selections
     public void menuNavigator(){
         int choice = scnr.nextInt();
@@ -147,13 +164,23 @@ public class CustomerInterface {
                 customer.getOrder().displayOrderedItems();
                 actions();
             }
-            case 5 ->{
-                sendOrder();
+            case 5 -> {
+                customer.resetOrder();
+                System.out.println("Your order has been reset.");
                 actions();
             }
             case 6 ->{
+                sendOrder();
+                actions();
+            }
+            case 7 ->{
                 checkStatus();
                 actions();
+            }
+            case 8 ->{
+                System.out.println("THank you! Have a nice day!");
+                data.save();
+                manager.start();
             }
             default -> {
                 txt.invalidEntry();
@@ -169,29 +196,35 @@ public class CustomerInterface {
         actions();
     }
 
+
     //check on existing orders location
     //TODO shows driver location and order status
     //TODO increments both to simulate order progression
     public void checkStatus(){
-        customer.getOrder().updateStatus();
-        showOrder();
-        if (customer.getOrder().getStatus() == DELIVERED){
+        int orderID = customer.getOrder().getID();
+        Order order = data.getOrder(orderID);
+        data.getOrder(orderID).updateStatus();
+        showOrder(order);
+
+        if (data.getOrder(orderID).getStatus() == DELIVERED){
 
             System.out.println("Your Order has been delivered. Would you like to rate your Driver?");
             if(txt.yesOrNo(scnr)){
                 rateDriverPrompt();
+                customer.resetOrder();
             }
             else{
                 System.out.println("Have a nice day.");
+                customer.resetOrder();
             }
 
-
         }
+
     }
 
     //show the users current order
-    public void showOrder(){
-        customer.getOrder().viewOrder();
+    public void showOrder(Order order){
+        order.viewOrder();
     }
     //add item to users order
     //TODO add item to order and increase price
@@ -224,6 +257,14 @@ public class CustomerInterface {
 
     //APPROVE ORDER AND ASSIGN AN AVAILABLE DRIVER
     public void sendOrder(){
+
+        data.addOrder(customer.getOrder());
+        txt.printGap();
+        System.out.println("You're order is on its way");
+        txt.printGap();
+        //Your order is being prepared and will be on its way soon!
+
+       /*
         for(Driver driver : Drivers){
             if (driver.isAvailable()){
                 driver.setAvailable(false);
@@ -237,6 +278,8 @@ public class CustomerInterface {
                 break;
             }
         }
+        */
+
     }
 
     //RATE DRIVER AFTER ORDER IS DELIVERED

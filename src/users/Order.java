@@ -14,11 +14,12 @@ public class Order implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private int orderID;
+    private int id;
     private Random ran;
     private List<String> orderedItems;
     private Status status;
     private Customer customer;
+    private Driver driver;
     private double totalPrice;
 
     //NEEDS TO HAVE ITS OWN MENU FOR PRICE CALCULATIONS
@@ -33,11 +34,12 @@ public class Order implements Serializable {
         menu = new Menu();
         orderedItems = new ArrayList<>();
         status = NOT_PLACED;
+        driver = null;
     }
 
     //ASSIGN A RANDOM 3 DIGIT ID
     public void assignID(){
-        orderID = ran.nextInt(100, 1000);
+        this.id = ran.nextInt(100, 1000);
     }
 
     //UPDATES ORDER STATUS UNTIL COMPLETED
@@ -57,6 +59,14 @@ public class Order implements Serializable {
         }
     }
 
+    //CHECKS FOR DRIVER AND RETURNS NULL IF NO DRIVER IS PRESENT
+    public String driverNameCheck(){
+        if(this.driver == null){
+            return "NULL";
+        }
+        return this.driver.getName();
+    }
+
     //DISPLAYS ENTIRE ORDER W/ DRIVER, OWNER, LOCATION
     public void viewOrder(){
 
@@ -65,15 +75,14 @@ public class Order implements Serializable {
         System.out.println("+-----------------------------+");
         System.out.printf("| %-13s: %12s |\n", "Owner", customer.getName());
         System.out.printf("| %-13s: %12s |\n", "Location", customer.getLocation());
-        System.out.printf("| %-13s: %12s |\n", "Driver", customer.getDriver().getName());
+        System.out.printf("| %-13s: %12s |\n", "Driver", driverNameCheck());
         System.out.println();
     }
 
 
-    //TODO CALCULATE NEW PRICE OF ORDER FOR PRINT RETURN
     public void displayOrderedItems(){
         System.out.println("+-----------------------------+");
-        System.out.println("|          Order " + orderID + "          |");
+        System.out.println("|          Order " + this.id + "          |");
         System.out.println("+-----------------------------+");
 
         int i = 1;
@@ -86,6 +95,10 @@ public class Order implements Serializable {
         System.out.printf("| %-14s: %11s |\n", "Status", this.status);
         System.out.println("+-----------------------------+");
         System.out.println();
+    }
+
+    public int getID(){
+        return this.id;
     }
 
 
@@ -141,8 +154,16 @@ public class Order implements Serializable {
         return orderedItems;
     }
 
-    //
+    //RETURN ORDER STATUS
     public Status getStatus(){
         return this.status;
+    }
+
+    public Driver getDriver(){
+        return this.driver;
+    }
+
+    public void setDriver(Driver driver){
+        this.driver = driver;
     }
 }
