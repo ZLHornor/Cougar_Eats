@@ -20,6 +20,7 @@ public class DataBase implements Serializable {
         customers = new HashMap<>();
         orders = new HashMap<>();
         drivers = new HashMap<>();
+        hireDrivers();
     }
 
     public void addCustomer(Customer customer){
@@ -56,6 +57,44 @@ public class DataBase implements Serializable {
             cust.printInfo();
 
         }
+    }
+
+    // FILL SOME DRIVERS INTO THE LINKEDLIST
+    public void hireDrivers(){
+
+        Driver jimmy = new Driver("Jimmy", "In House");
+        Driver billy = new Driver("Billy", "In House");
+        Driver timmy = new Driver("Timmy", "In House");
+        Driver smitty = new Driver("Smitty", "In House");
+        Driver greg = new Driver("Greg", "In House");
+
+
+
+        drivers.put(jimmy.getID(), jimmy);
+        drivers.put(billy.getID(), billy);
+        drivers.put(timmy.getID(), timmy);
+        drivers.put(smitty.getID(), smitty);
+        drivers.put(greg.getID(), greg);
+
+    }
+
+    public void printDrivers(){
+        for(Driver driver : drivers.values()){
+            driver.printInfo();
+
+        }
+    }
+
+    public Driver getDriver (int pin){
+        if (drivers.containsKey(pin)){
+            return drivers.get(pin);
+        }
+        else {
+
+            System.out.println("Driver Not Found.");
+            return null;
+        }
+
     }
 
 

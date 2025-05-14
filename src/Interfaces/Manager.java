@@ -71,6 +71,7 @@ public class Manager {
     public void selectMode(){
 
         int choice;
+        txt.printShortLine();
         System.out.println("|     Select an Interface     |");
         System.out.println("+-----------------------------+");
         System.out.printf("| %-10s: %15s |\n", "Driver", "1");
@@ -82,7 +83,7 @@ public class Manager {
         if(choice == 1){
             userCheck = DRIVER;
         }
-        if(choice == 2){
+        else if(choice == 2){
             userCheck = CUSTOMER;
         }else{
             txt.invalidEntry();
@@ -92,7 +93,7 @@ public class Manager {
 
     public void switchUsers(){
         switch(userCheck){
-            case DRIVER ->{}
+            case DRIVER ->{drvr.mainMenu();}
             case CUSTOMER -> cstmr.mainMenu();
         }
     }

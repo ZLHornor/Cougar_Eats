@@ -31,8 +31,6 @@ public class CustomerInterface {
         this.manager = manager;
         this.data = data;
 
-
-        hireDrivers();
     }
 
 
@@ -128,7 +126,8 @@ public class CustomerInterface {
         System.out.println();
 
         //AUTO SAVES AFTER EVERY SELECTION
-        data.save();
+        //UPDATES CUSTOMER IN DATABASE
+        save();
 
         //USER SELECTS AN OPTION
         menuNavigator();
@@ -217,7 +216,6 @@ public class CustomerInterface {
                 System.out.println("Have a nice day.");
                 customer.resetOrder();
             }
-
         }
 
     }
@@ -315,20 +313,10 @@ public class CustomerInterface {
     }
 
 
-    // FILL SOME DRIVERS INTO THE LINKEDLIST
-    public void hireDrivers(){
-        Drivers.add(new Driver("Driver 1", "In House"));
-        Drivers.add(new Driver("Driver 2", "In House"));
-        Drivers.add(new Driver("Driver 3", "In House"));
-        Drivers.add(new Driver("Driver 4", "In House"));
-        Drivers.add(new Driver("Driver 5", "In House"));
-    }
+    public void save(){
+        data.addCustomer(customer);
 
-    // DISPLAY ALL DRIVER INFO
-    public void printDrivers(){
-        for(Driver driver: Drivers){
-            driver.printInfo();
-        }
+        data.save();
     }
 
     //TODO make a sign out function
