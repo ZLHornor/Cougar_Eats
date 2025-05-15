@@ -13,6 +13,7 @@ public class Driver extends Person implements Serializable {
     private ArrayBlockingQueue<Integer> ratings;
     private Customer customer;
     private boolean isAvailable = true;
+    Order order;
 
     public Driver(String name, String location){
         super(name, location);
@@ -73,5 +74,13 @@ public class Driver extends Person implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Order getOrder(){
+        return this.order;
+    }
+
+    public void setOrder(Order order){
+        this.order = order;
     }
 }

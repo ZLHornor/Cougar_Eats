@@ -2,6 +2,7 @@ package Interfaces;
 
 import data_base.DataBase;
 import users.Driver;
+import users.Order;
 
 import java.util.Scanner;
 
@@ -66,11 +67,12 @@ public class DriverInterface {
         System.out.printf("| %-13s: %12d |\n", "Select Order", 1);
         System.out.printf("| %-13s: %12d |\n", "My Order", 2);
         System.out.printf("| %-13s: %12d |\n", "Update Status", 3);
-        System.out.printf("| %-13s: %12d |\n", "Log Out", 8); //TODO make this method
+        System.out.printf("| %-13s: %12d |\n", "Log Out", 4); //TODO make this method
         txt.printShortLine();
         System.out.println();
 
         //AUTO SAVES AFTER EVERY SELECTION
+        save();
         data.save();
 
         //USER SELECTS AN OPTION
@@ -83,43 +85,18 @@ public class DriverInterface {
         int choice = scnr.nextInt();
         switch (choice){
             case 1 ->{
-                viewMenu();
-                //ASK IF USER WANTS TO ADD AN ITEM
-                System.out.println("+ Add an item to your order?  +");
-                //System.out.println("+-----------------------------+");
-                if(txt.yesOrNo(scnr)){
-                    addItem();
-                    actions();
-                }else{
-                    actions();
-                }
+                selectOrder();
+                actions();
             }
             case 2 ->{
-                addItem();
+                driver.getOrder().viewOrder();
                 actions();
             }
             case 3 ->{
-                removeItem();
+                updateStatus();
                 actions();
             }
             case 4 -> {
-                customer.getOrder().displayOrderedItems();
-                actions();
-            }
-            case 5 -> {
-                customer.resetOrder();
-                System.out.println("Your order has been reset.");
-                actions();
-            }
-            case 6 ->{
-                sendOrder();
-                actions();
-            }
-            case 7 ->{
-                checkStatus();
-                actions();
-            }
-            case 8 ->{
                 System.out.println("THank you! Have a nice day!");
                 data.save();
                 manager.start();
@@ -127,6 +104,68 @@ public class DriverInterface {
             default -> {
                 txt.invalidEntry();
                 actions();
+            }
+        }
+    }
+
+
+
+    // PROMPTS DRIVER TO SELECT AN ORDERS PIN FROM LIST OF ORDERS
+    /*
+    1. Print Orders
+    2. Get order ID number from the user
+    3. retrieve order from database and assign to driver
+    4. update order with assigned driver
+    5. replace database order with updated order
+     */
+    private void selectOrder() {
+        data.printOrders();
+
+        int orderNum = txt.getIntegers("Please Select an order by its ID.");
+
+        Order order = data.getOrder(orderNum);
+        driver.setOrder(order);
+
+        driver.getOrder().setDriver(driver);
+        driver.setAvailable(false);
+
+        save();
+    }
+
+    /*
+    1. put current order into database for update or later use
+     */
+    public void updateOrder(Order order){
+        data.addOrder(order);
+    }
+
+    /*\
+    1. save order to database
+    2. save driver to database
+     */
+    public void save(){
+        updateOrder(driver.getOrder());
+        data.addDriver(driver);
+    }
+
+
+    /*
+    1. Update current working order
+    2. check order status and update driver location
+     */
+    public void updateStatus(){
+        driver.getOrder().updateStatus();
+        switch(driver.getOrder().getStatus()){
+            case NOT_PLACED -> {
+            }
+            case PLACED -> {
+                driver.setLocation("Waiting on order.");
+            }
+            case ON_ROUTE -> {
+                driver.setLocation("On our way.");
+            }
+            case DELIVERED -> {
+                driver.setLocation("On our way home.");
             }
         }
     }

@@ -77,4 +77,9 @@ public class TextHelpers {
         System.out.println();
     }
 
+    public int getIntegers(String prompt){
+        System.out.println(prompt);
+        return scnr.nextInt();
+    }
+
 }

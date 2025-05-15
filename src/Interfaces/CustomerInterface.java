@@ -99,6 +99,7 @@ public class CustomerInterface {
         System.out.println("+---------------------------------------+");
         System.out.println("|              Welcome back!            |");
         System.out.println("|        What is your ID Number?        |");
+        System.out.println("+---------------------------------------+");
 
         int id = scnr.nextInt();
         customer = data.getCustomer(id);
@@ -127,6 +128,7 @@ public class CustomerInterface {
 
         //AUTO SAVES AFTER EVERY SELECTION
         //UPDATES CUSTOMER IN DATABASE
+        addCustomerDATA();
         save();
 
         //USER SELECTS AN OPTION
@@ -201,8 +203,8 @@ public class CustomerInterface {
     //TODO increments both to simulate order progression
     public void checkStatus(){
         int orderID = customer.getOrder().getID();
-        Order order = data.getOrder(orderID);
         data.getOrder(orderID).updateStatus();
+        Order order = data.getOrder(orderID);
         showOrder(order);
 
         if (data.getOrder(orderID).getStatus() == DELIVERED){
@@ -217,7 +219,6 @@ public class CustomerInterface {
                 customer.resetOrder();
             }
         }
-
     }
 
     //show the users current order
@@ -283,15 +284,25 @@ public class CustomerInterface {
     //RATE DRIVER AFTER ORDER IS DELIVERED
     //TODO Check Functionality
     public void rateDriver(int rating){
-        //IF RATINGS HAS SPACE DO NOTHING
-        if(customer.getDriver().getRatings().offer(rating)){
+
+        //Get the customer order from DATABASE
+        Order order = data.getOrder(customer.getOrder().getID());
+        //Get Driver from Order from Database
+        Driver driver = order.getDriver();
+
+        //IF RATINGS HAS SPACE add rating
+        if(driver.getRatings().offer(rating)){
             return;
         }
         else{
             //IF RATINGS IS FULL POLL THE FRONT OF QUEUE AND CALL AGAIN
-            customer.getDriver().getRatings().remove();
+            driver.getRatings().remove();
             rateDriver(rating);
         }
+
+        //return newly rated driver to DATABASE
+        data.addDriver(driver);
+        save();
     }
 
     public void rateDriverPrompt(){
@@ -312,10 +323,11 @@ public class CustomerInterface {
 
     }
 
+    public void addCustomerDATA(){
+        data.addCustomer(customer);
+    }
 
     public void save(){
-        data.addCustomer(customer);
-
         data.save();
     }
 

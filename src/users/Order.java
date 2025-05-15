@@ -55,6 +55,7 @@ public class Order implements Serializable {
                 status = DELIVERED;
             }
             case DELIVERED -> {
+                System.out.println("This order has been delivered.");
             }
         }
     }

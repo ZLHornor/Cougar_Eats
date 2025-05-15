@@ -27,6 +27,8 @@ public class DataBase implements Serializable {
         customers.put(customer.getID(), customer);
     }
 
+    public void addDriver(Driver driver) {drivers.put(driver.getID(), driver);}
+
     public void addOrder(Order order) {
         this.orders.put(order.getID(), order);
     }
@@ -96,6 +98,13 @@ public class DataBase implements Serializable {
         }
 
     }
+
+    public void printOrders(){
+        for (Order order: orders.values()){
+            order.viewOrder();
+        }
+    }
+
 
 
 
