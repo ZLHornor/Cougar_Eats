@@ -26,20 +26,20 @@ public class Menu implements Serializable {
     private void setMenu(){
         itemPrices = new HashMap<>();
         itemList = new ArrayList<>();
-        itemPrices.put("Main 1", 1.00);
-        itemList.add("Main 1");
-        itemPrices.put("Main 2", 1.00);
-        itemList.add("Main 2");
-        itemPrices.put("Main 3", 1.00);
-        itemList.add("Main 3");
-        itemPrices.put("Drink 1", 1.00);
-        itemList.add("Drink 1");
-        itemPrices.put("Drink 2", 1.00);
-        itemList.add("Drink 2");
-        itemPrices.put("Side 1", 1.00);
-        itemList.add("Side 1");
-        itemPrices.put("Side 2", 1.00);
-        itemList.add("Side 2");
+        itemPrices.put("Burger", 9.00);
+        itemList.add("Burger");
+        itemPrices.put("Pizza", 15.00);
+        itemList.add("Pizza");
+        itemPrices.put("Salad", 8.00);
+        itemList.add("Salad");
+        itemPrices.put("Coffee", 3.00);
+        itemList.add("Coffee");
+        itemPrices.put("Soda", 3.00);
+        itemList.add("Soda");
+        itemPrices.put("Fries", 5.00);
+        itemList.add("Fries");
+        itemPrices.put("Slaw", 4.00);
+        itemList.add("Slaw");
     }
 
     public void displayMenu() {

@@ -6,6 +6,8 @@ import users.Order;
 
 import java.util.Scanner;
 
+import static users.Status.PLACED;
+
 public class DriverInterface {
 
     DataBase data;
@@ -72,7 +74,7 @@ public class DriverInterface {
         System.out.println();
 
         //AUTO SAVES AFTER EVERY SELECTION
-        save();
+        saveDriver();
         data.save();
 
         //USER SELECTS AN OPTION
@@ -128,24 +130,30 @@ public class DriverInterface {
 
         driver.getOrder().setDriver(driver);
         driver.setAvailable(false);
+        driver.getOrder().updateStatus();
 
-        save();
+        saveDriver();
+        saveOrder();
     }
 
-    /*
-    1. put current order into database for update or later use
-     */
+
+
+
+
+    //save driver to database
+    public void saveDriver(){
+        data.addDriver(driver);
+
+    }
+    //1. save order to database
+    public void saveOrder(){
+        updateOrder(driver.getOrder());
+    }
+
+    //put current order into database for update or later use
     public void updateOrder(Order order){
         data.addOrder(order);
-    }
 
-    /*\
-    1. save order to database
-    2. save driver to database
-     */
-    public void save(){
-        updateOrder(driver.getOrder());
-        data.addDriver(driver);
     }
 
 
@@ -168,6 +176,8 @@ public class DriverInterface {
                 driver.setLocation("On our way home.");
             }
         }
+        saveOrder();
+        driver.getOrder().viewOrder();
     }
 
 

@@ -27,24 +27,25 @@ public class TextHelpers {
 
     //CONFIRM YES OR NO AND RETURN BOOLEAN
     public boolean yesOrNo(Scanner scnr){
-        printShortLine();
+
         System.out.printf("| %-10s: %15s |\n", "Yes", "Y");
         System.out.printf("| %-10s: %15s |\n", "No", "N");
-        printShortLine();
+
+
         String answer = scnr.nextLine().toLowerCase();
+
 
         switch (answer) {
             case "y" -> {
                 printGap();
                 return true;}
-            case "n" -> { return false;}
+            case "n" ->  {return false;}
             default -> {
                 invalidEntry();
-                yesOrNo(scnr);
+                return yesOrNo(scnr);
             }
         }
 
-        return true;
     }
 
     //TEXT PROMPT FOR INVALID ENTRY

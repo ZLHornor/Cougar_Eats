@@ -23,6 +23,14 @@ public class DataBase implements Serializable {
         hireDrivers();
     }
 
+    /**
+    The next three methods add to data structures
+    1. add customer to customers
+    2. add driver to drivers
+    3. add order to orders
+
+    All use their pins as keys to their HashMaps
+     */
     public void addCustomer(Customer customer){
         customers.put(customer.getID(), customer);
     }
@@ -33,18 +41,54 @@ public class DataBase implements Serializable {
         this.orders.put(order.getID(), order);
     }
 
+    /**
+    * All three getters
+    * Each getter has a check that returns null and an error message if the
+    * Pin Doesn't exit
+     */
     public Customer getCustomer(int id){
 
         if(!customers.containsKey(id)){
+            System.out.println("+-----------------------------+");
+            System.out.println("|     Customer Not Found      |");
+            System.out.println("|      Please Try Again.      |");
+            System.out.println("+-----------------------------+");
             return null;
         }
         return customers.get(id);
     }
 
     public Order getOrder(int id){
+        if (!orders.containsKey(id)) {
+            System.out.println("+-----------------------------+");
+            System.out.println("|       Order Not Found       |");
+            System.out.println("|      Please Try Again.      |");
+            System.out.println("+-----------------------------+");
+            return null;
+        }
+
         return orders.get(id);
     }
 
+    public Driver getDriver (int pin){
+        if (drivers.containsKey(pin)){
+            return drivers.get(pin);
+        }
+        else {
+            System.out.println("+-----------------------------+");
+            System.out.println("|       Order Not Found       |");
+            System.out.println("|      Please Try Again.      |");
+            System.out.println("+-----------------------------+");
+            return null;
+        }
+    }
+
+
+    /**
+     * Save the Serialized DataBase Class
+     * saves to file and confirms with prompt
+     * throws IO exception
+     */
     public void save(){
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
             out.writeObject(this);
@@ -54,14 +98,34 @@ public class DataBase implements Serializable {
         }
     }
 
+
+    /**
+     * Print all the desired Objects information
+     */
     public void printCustomers(){
-        for(Customer cust : customers.values()){
-            cust.printInfo();
+        for(Customer customer : customers.values()){
+            customer.printInfo();
 
         }
     }
 
-    // FILL SOME DRIVERS INTO THE LINKEDLIST
+    public void printOrders(){
+        for (Order order: orders.values()){
+            order.viewOrder();
+        }
+    }
+
+    public void printDrivers(){
+        for(Driver driver : drivers.values()){
+            driver.printInfo();
+
+        }
+    }
+
+
+    /**
+     * FILL SOME DRIVERS INTO THE Hashtable w/ randomized numbers
+     */
     public void hireDrivers(){
 
         Driver jimmy = new Driver("Jimmy", "In House");
@@ -80,29 +144,17 @@ public class DataBase implements Serializable {
 
     }
 
-    public void printDrivers(){
-        for(Driver driver : drivers.values()){
-            driver.printInfo();
 
-        }
-    }
 
-    public Driver getDriver (int pin){
-        if (drivers.containsKey(pin)){
-            return drivers.get(pin);
-        }
-        else {
-
-            System.out.println("Driver Not Found.");
-            return null;
-        }
-
-    }
-
-    public void printOrders(){
-        for (Order order: orders.values()){
-            order.viewOrder();
-        }
+    /**
+    1. Remove order from DataBase
+    2. Send removal Confirmation
+     */
+    public void removeOrder(Order order){
+        orders.remove(order.getID());
+        System.out.println("+-----------------------------+");
+        System.out.println("|       Order Completed.      |");
+        System.out.println("+-----------------------------+");
     }
 
 

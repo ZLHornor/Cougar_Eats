@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import static users.Status.DELIVERED;
+import static users.Status.*;
 
 public class CustomerInterface {
 
@@ -199,25 +199,37 @@ public class CustomerInterface {
 
 
     //check on existing orders location
-    //TODO shows driver location and order status
-    //TODO increments both to simulate order progression
+
     public void checkStatus(){
-        int orderID = customer.getOrder().getID();
-        data.getOrder(orderID).updateStatus();
-        Order order = data.getOrder(orderID);
-        showOrder(order);
 
-        if (data.getOrder(orderID).getStatus() == DELIVERED){
+        Order order = customer.getOrder();
+        if(order.getStatus() != PLACED && order.getStatus() != NOT_PLACED){
+            order.updateStatus();
+            showOrder(order);
+        }
+        else if (order.getStatus() == DELIVERED){
+            System.out.println("+-----------------------------+");
+            System.out.println("|       Order Delivered!      |");
+            System.out.println("|      Rate your Driver?      |");
+            System.out.println("+-----------------------------+");
 
-            System.out.println("Your Order has been delivered. Would you like to rate your Driver?");
             if(txt.yesOrNo(scnr)){
                 rateDriverPrompt();
                 customer.resetOrder();
             }
             else{
-                System.out.println("Have a nice day.");
+                System.out.println("+-----------------------------+");
+                System.out.println("|          Thank You!         |");
+                System.out.println("|       Have a Nice Day!      |");
+                System.out.println("+-----------------------------+");
                 customer.resetOrder();
             }
+        }else{
+            customer.getOrder().displayOrderedItems();
+            System.out.println("+-----------------------------+");
+            System.out.println("|       Order not sent        |");
+            System.out.println("|     Please finish order     |");
+            System.out.println("+-----------------------------+");
         }
     }
 
@@ -225,6 +237,7 @@ public class CustomerInterface {
     public void showOrder(Order order){
         order.viewOrder();
     }
+
     //add item to users order
     //TODO add item to order and increase price
     public void addItem(){
@@ -261,28 +274,13 @@ public class CustomerInterface {
         txt.printGap();
         System.out.println("You're order is on its way");
         txt.printGap();
-        //Your order is being prepared and will be on its way soon!
 
-       /*
-        for(Driver driver : Drivers){
-            if (driver.isAvailable()){
-                driver.setAvailable(false);
-                //ASSIGN THE AVAILABLE DRIVER TO THE CUSTOMER
-                customer.setDriver(driver);
-                System.out.println(driver.getName() + " has been assigned.");
-                customer.getDriver().printInfo();
-                driver.setCustomer(this.customer);
 
-                customer.getOrder().updateStatus();
-                break;
-            }
-        }
-        */
 
     }
 
     //RATE DRIVER AFTER ORDER IS DELIVERED
-    //TODO Check Functionality
+
     public void rateDriver(int rating){
 
         //Get the customer order from DATABASE
@@ -300,8 +298,10 @@ public class CustomerInterface {
             rateDriver(rating);
         }
 
+        data.removeOrder(order);
+
+
         //return newly rated driver to DATABASE
-        data.addDriver(driver);
         save();
     }
 

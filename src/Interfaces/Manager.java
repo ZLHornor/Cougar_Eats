@@ -79,7 +79,7 @@ public class Manager {
         System.out.println("+-----------------------------+");
 
         choice = scnr.nextInt();
-
+        scnr.nextLine();
         if(choice == 1){
             userCheck = DRIVER;
         }
@@ -89,6 +89,7 @@ public class Manager {
             txt.invalidEntry();
             selectMode();
         }
+
     }
 
     public void switchUsers(){
