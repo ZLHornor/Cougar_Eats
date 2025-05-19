@@ -6,7 +6,7 @@ import users.Order;
 
 import java.util.Scanner;
 
-import static users.Status.PLACED;
+
 
 public class DriverInterface {
 
@@ -30,7 +30,7 @@ public class DriverInterface {
 
     }
 
-    private void logIn() {
+    public void logIn() {
         txt.printShortLine();
         System.out.println("|      What is your pin?      |");
         txt.printShortLine();
@@ -110,8 +110,6 @@ public class DriverInterface {
         }
     }
 
-
-
     // PROMPTS DRIVER TO SELECT AN ORDERS PIN FROM LIST OF ORDERS
     /*
     1. Print Orders
@@ -129,16 +127,12 @@ public class DriverInterface {
         driver.setOrder(order);
 
         driver.getOrder().setDriver(driver);
-        driver.setAvailable(false);
+
         driver.getOrder().updateStatus();
 
         saveDriver();
         saveOrder();
     }
-
-
-
-
 
     //save driver to database
     public void saveDriver(){
@@ -155,7 +149,6 @@ public class DriverInterface {
         data.addOrder(order);
 
     }
-
 
     /*
     1. Update current working order

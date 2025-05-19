@@ -11,8 +11,7 @@ public class Driver extends Person implements Serializable {
 
     Random ran;
     private ArrayBlockingQueue<Integer> ratings;
-    private Customer customer;
-    private boolean isAvailable = true;
+
     Order order;
 
     public Driver(String name, String location){
@@ -58,22 +57,6 @@ public class Driver extends Person implements Serializable {
 
     public ArrayBlockingQueue<Integer> getRatings(){
         return ratings;
-    }
-
-    public boolean isAvailable(){
-        return isAvailable;
-    }
-
-    public void setAvailable(Boolean available){
-        this.isAvailable = available;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public Order getOrder(){

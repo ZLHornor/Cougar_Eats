@@ -14,7 +14,6 @@ import static users.Status.*;
 
 public class CustomerInterface {
 
-    private List<Driver> Drivers;
     private Customer customer;
     private final Menu menu;
     private Scanner scnr;
@@ -26,13 +25,11 @@ public class CustomerInterface {
 
         scnr = new Scanner(System.in);
         menu = new Menu();
-        Drivers = new LinkedList<>();
         txt = new TextHelpers(scnr);
         this.manager = manager;
         this.data = data;
 
     }
-
 
     //INITIAL MENU FOR LOG-IN/USER CREATION
     public void mainMenu(){
@@ -190,16 +187,13 @@ public class CustomerInterface {
         }
     }
 
-
     //DISPLAY MENU ITEMS
     public void viewMenu(){
         menu.displayMenu();
         actions();
     }
 
-
     //check on existing orders location
-
     public void checkStatus(){
 
         Order order = customer.getOrder();
@@ -280,7 +274,6 @@ public class CustomerInterface {
     }
 
     //RATE DRIVER AFTER ORDER IS DELIVERED
-
     public void rateDriver(int rating){
 
         //Get the customer order from DATABASE
@@ -331,5 +324,4 @@ public class CustomerInterface {
         data.save();
     }
 
-    //TODO make a sign out function
 }

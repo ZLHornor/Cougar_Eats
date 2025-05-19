@@ -12,7 +12,6 @@ public class Menu implements Serializable {
 
     //HASHMAP TO STORE ITEMS AND PRICES
     private HashMap<String, Double> itemPrices;
-
     //ORDERED LIST FOR INDEXING
     private List<String> itemList;
 
@@ -59,15 +58,9 @@ public class Menu implements Serializable {
 
     }
 
-
     //RETURN itemPrices HASHMAP FOR PRICE CHECKING
     public double getItemPrice(String item){
         return itemPrices.get(item);
-    }
-
-
-    public HashMap<String, Double> getItemPrices() {
-        return itemPrices;
     }
 
     //RETURN ITEM LIST WITH INDEXS FOR SELECTION

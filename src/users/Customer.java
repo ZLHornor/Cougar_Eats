@@ -6,9 +6,8 @@ public class Customer extends Person implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Driver driver = null;
+
     private Order order;
-    private boolean orderPlaced = false;
 
     public Customer(String name, String location) {
         super(name, location);
@@ -26,15 +25,6 @@ public class Customer extends Person implements Serializable {
 
     }
 
-    //RETURN DRIVER FOR rateDriver() IN MANAGER
-    public Driver getDriver (){
-        return this.driver;
-    }
-
-    //ASSIGN AN AVAILABLE DRIVER
-    public void setDriver(Driver driver){
-        this.driver = driver;
-    }
 
     public Order getOrder() {
         return this.order;
